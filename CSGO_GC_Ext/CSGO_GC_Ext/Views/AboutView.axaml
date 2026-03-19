@@ -57,7 +57,7 @@
         <Separator Margin="0,20"/>
 
         <TextBlock Classes="subheading" Text="Official Repository"/>
-        <HyperlinkButton Cursor="Hand" Content="https://github.com/control0forver/csgo_gc_ext"/>
+        <HyperlinkButton Cursor="Hand" Content="https://github.com/control0forver/csgo__gc__ext" NavigateUri="https://github.com/control0forver/csgo_gc_ext"/>
       </StackPanel>
     </StackPanel>
     
