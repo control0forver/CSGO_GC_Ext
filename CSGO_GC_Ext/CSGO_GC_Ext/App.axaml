@@ -1,0 +1,145 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:t="clr-namespace:System;assembly=System.Runtime"
+             xmlns:local="using:CSGO_GC_Ext"
+             x:Class="CSGO_GC_Ext.App"
+             RequestedThemeVariant="Dark">
+
+  <Application.DataTemplates>
+    <local:ViewLocator/>
+  </Application.DataTemplates>
+
+  <Application.Styles>
+    <FluentTheme />
+
+    <!--<Style Selector="Button.BP_Primiary">
+        <Setter Property="CornerRadius">0</Setter>
+        <Setter Property="Background">#c3bef0</Setter>
+        <Setter Property="Foreground">#defcf9</Setter>
+        <Setter Property="Effect">
+          <DropShadowEffect/>
+        </Setter>
+      </Style>
+      
+      <Style Selector="Button.BP_Secondary">
+        <Setter Property="CornerRadius">0</Setter>
+        <Setter Property="Background">#cca8e9</Setter>
+        <Setter Property="Foreground">#cadefc</Setter>
+        <Setter Property="Effect">
+          <DropShadowEffect/>
+        </Setter>
+      </Style>-->
+
+    <!--<Style Selector="ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="Transparent" />
+      </Style>
+      <Style Selector="ListBoxItem:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="Transparent" />
+      </Style>
+      <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+        <Setter Property="Background" Value="Transparent" />
+      </Style>
+      <Style Selector="ListBoxItem:not(:focus) /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="Transparent" />
+      </Style>-->
+
+    <!-- FontSizable Controls -->
+    <!--
+        TextElement.cs
+        ContentPresenter.cs
+        TemplatedControl.cs
+        TextBlock.cs
+      -->
+    <Style Selector="TextBlock.heading">
+      <Setter Property="FontSize" Value="36"/>
+      <Setter Property="FontWeight" Value="Bold"/>
+      <Setter Property="Margin" Value="0 0 0 10"/>
+      <Setter Property="Foreground" Value="{DynamicResource Foreground.TextBlock.heading}"/>
+    </Style>
+    <Style Selector="TextBlock.subheading">
+      <Setter Property="FontSize" Value="24"/>
+      <Setter Property="FontWeight" Value="SemiBold"/>
+      <Setter Property="Margin" Value="0 0 0 8"/>
+      <Setter Property="Foreground" Value="{DynamicResource Foreground.TextBlock.subheading}"/>
+    </Style>
+    <Style Selector="TextBlock.body">
+      <Setter Property="FontSize" Value="18"/>
+      <Setter Property="Margin" Value="0 0 0 5"/>
+      <Setter Property="TextWrapping" Value="Wrap"/>
+      <Setter Property="Foreground" Value="{DynamicResource Foreground.TextBlock.body}"/>
+      <!-- Safe Text Wrapping Area -->
+      <Setter Property="Padding" Value="0,0,6,0"/>
+    </Style>
+    <Style Selector="TextBlock.caption">
+      <Setter Property="FontSize" Value="16"/>
+      <Setter Property="FontStyle" Value="Italic"/>
+      <Setter Property="Foreground" Value="{DynamicResource Foreground.TextBlock.caption}"/>
+    </Style>
+    <Style Selector="Run.heading">
+      <Setter Property="FontSize" Value="36"/>
+      <Setter Property="FontWeight" Value="Bold"/>
+      <Setter Property="Foreground" Value="{DynamicResource Foreground.TextBlock.heading}"/>
+    </Style>
+    <Style Selector="Run.subheading">
+      <Setter Property="FontSize" Value="24"/>
+      <Setter Property="FontWeight" Value="SemiBold"/>
+      <Setter Property="Foreground" Value="{DynamicResource Foreground.TextBlock.subheading}"/>
+    </Style>
+    <Style Selector="Run.body">
+      <Setter Property="FontSize" Value="16"/>
+      <Setter Property="Foreground" Value="{DynamicResource Foreground.TextBlock.body}"/>
+    </Style>
+    <Style Selector="Run.caption">
+      <Setter Property="FontSize" Value="18"/>
+      <Setter Property="FontStyle" Value="Italic"/>
+      <Setter Property="Foreground" Value="{DynamicResource Foreground.TextBlock.caption}"/>
+    </Style>
+
+    <Style Selector="Button">
+      <Setter Property="Transitions">
+        <Transitions>
+          <BrushTransition Property="Background" Duration="0:0:0.28"/>
+        </Transitions>
+      </Setter>
+    </Style>
+
+    <Style Selector="ListBoxItem /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Transitions">
+        <Transitions>
+          <BrushTransition Property="Background" Duration="0:0:0.28"/>
+        </Transitions>
+      </Setter>
+    </Style>
+
+    <Style Selector="Rectangle.VerticalSeparator">
+      <Setter Property="Width" Value="1"/>
+      <Setter Property="VerticalAlignment" Value="Stretch"/>
+      <Setter Property="Fill" Value="Gray"/>
+    </Style>
+  </Application.Styles>
+
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.ThemeDictionaries>
+        <!-- Light Theme -->
+        <ResourceDictionary x:Key="Light">
+          <SolidColorBrush x:Key="Foreground.TextBlock.heading" Color="#8B4513"/>
+          <SolidColorBrush x:Key="Foreground.TextBlock.subheading" Color="#A0522D"/>
+          <SolidColorBrush x:Key="Foreground.TextBlock.body" Color="#654321"/>
+          <SolidColorBrush x:Key="Foreground.TextBlock.caption" Color="#8B4513"/>
+        </ResourceDictionary>
+
+        <!-- Dark Theme -->
+        <ResourceDictionary x:Key="Dark">
+          <SolidColorBrush x:Key="Foreground.TextBlock.heading" Color="#E0B868"/>
+          <SolidColorBrush x:Key="Foreground.TextBlock.subheading" Color="#D2B48C"/>
+          <SolidColorBrush x:Key="Foreground.TextBlock.body" Color="#CDAB7D"/>
+          <SolidColorBrush x:Key="Foreground.TextBlock.caption" Color="#A0825D"/>
+        </ResourceDictionary>
+      </ResourceDictionary.ThemeDictionaries>
+    </ResourceDictionary>
+    
+    <t:String x:Key="AppTitle">Extensions for CSGO_GC</t:String>
+    <t:String x:Key="AppDisplayVersion">v1.0.0</t:String>
+  </Application.Resources>
+</Application>

@@ -1,0 +1,29 @@
+<Project>
+  <!-- https://learn.microsoft.com/en-us/nuget/consume-packages/central-package-management -->
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Avalonia packages -->
+    <!-- Important: keep version in sync! -->
+    <PackageVersion Include="AsyncImageLoader.Avalonia" Version="3.3.0" />
+    <PackageVersion Include="Avalonia" Version="11.3.4" />
+    <PackageVersion Include="Avalonia.Themes.Fluent" Version="11.3.4" />
+    <PackageVersion Include="Avalonia.Fonts.Inter" Version="11.3.4" />
+    <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.4" />
+    <PackageVersion Include="Avalonia.Desktop" Version="11.3.4" />
+    <PackageVersion Include="Avalonia.iOS" Version="11.3.4" />
+    <PackageVersion Include="Avalonia.Browser" Version="11.3.4" />
+    <PackageVersion Include="Avalonia.Android" Version="11.3.4" />
+    <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageVersion Include="Egolds.Avalonia.Xaml.Interactions.Animated" Version="11.2.3" />
+    <PackageVersion Include="Egolds.Xaml.Behaviors.Interactions.Animated" Version="11.3.3" />
+    <PackageVersion Include="Eremex.Avalonia.Controls" Version="1.1.144" />
+    <PackageVersion Include="FuzzySharp" Version="2.0.2" />
+    <PackageVersion Include="log4net" Version="3.2.0" />
+    <PackageVersion Include="Projektanker.Icons.Avalonia" Version="9.6.2" />
+    <PackageVersion Include="Projektanker.Icons.Avalonia.FontAwesome" Version="9.6.2" />
+    <PackageVersion Include="Swordfish.NET.CollectionsV3" Version="3.3.16" />
+    <PackageVersion Include="Xamarin.AndroidX.Core.SplashScreen" Version="1.0.1.15" />
+  </ItemGroup>
+</Project>

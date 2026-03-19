@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/CSGO_GC_Ext/">
+    <Project Path="CSGO_GC_Ext/CSGO_GC_Ext.Android/CSGO_GC_Ext.Android.csproj" />
+    <Project Path="CSGO_GC_Ext/CSGO_GC_Ext.Browser/CSGO_GC_Ext.Browser.csproj" />
+    <Project Path="CSGO_GC_Ext/CSGO_GC_Ext.Desktop/CSGO_GC_Ext.Desktop.csproj" />
+    <Project Path="CSGO_GC_Ext/CSGO_GC_Ext.iOS/CSGO_GC_Ext.iOS.csproj" />
+    <Project Path="CSGO_GC_Ext/CSGO_GC_Ext/CSGO_GC_Ext.csproj" />
+  </Folder>
+</Solution>

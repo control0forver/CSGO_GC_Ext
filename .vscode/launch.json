@@ -1,0 +1,25 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "C#: Desktop Debug (M1)",
+            "type": "dotnet",
+            "request": "launch",
+            "projectPath": "${workspaceFolder}/CSGO_GC_Ext/CSGO_GC_Ext.Desktop/CSGO_GC_Ext.Desktop.csproj",
+        },
+        {
+            "name": "C#: Desktop Debug (M2)",
+            "type": "coreclr",
+            "request": "launch",
+            "program": "dotnet",
+            "args": ["watch", "run"],
+            "cwd": "${workspaceFolder}/CSGO_GC_Ext/CSGO_GC_Ext.Desktop/",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": ".NET Core Attach",
+            "type": "coreclr",
+            "request": "attach"
+        }
+    ]
+}

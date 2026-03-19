@@ -1,0 +1,79 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:i="https://github.com/projektanker/icons.avalonia"
+            xmlns:ia="using:Xaml.Behaviors.Interactions.Animated"
+            xmlns:cs="clr-namespace:CSGO_GC_Ext.Converters;assembly=CSGO_GC_Ext"
+            xmlns:vm="clr-namespace:CSGO_GC_Ext.ViewModels"
+            xmlns:vs="clr-namespace:CSGO_GC_Ext.Views"
+            xmlns:ms="clr-namespace:CSGO_GC_Ext.Models"
+            xmlns:us="clr-namespace:CSGO_GC_Ext.Utils"
+            xmlns:sys="clr-namespace:System;assembly=mscorlib"
+            mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="500"
+            x:Class="CSGO_GC_Ext.Views.EditItemView"
+            x:DataType="vm:EditItemViewModel"
+            Background="{Binding Background}">
+  <Design.DataContext>
+    <vm:EditItemViewModel/>
+  </Design.DataContext>
+
+  <Grid RowDefinitions="*, Auto" RowSpacing="42">
+    <StackPanel Grid.Row="0" Orientation="Vertical" Spacing="10">
+      <StackPanel Orientation="Vertical">
+        <Image Source="{Binding EditItem.VisualImage}" Stretch="Uniform" />
+        <Border Height="12" Background="{Binding EditItem.RarityBrush}" />
+      </StackPanel>
+      <TextBlock Text="{Binding EditItem.FullDisplayName}" FontSize="36" FontWeight="Bold" Margin="5" />
+      <StackPanel Orientation="Horizontal" Spacing="5" Margin="0 4 0 0">
+        <TextBlock Text="{Binding EditItem.CategoryDisplayName}" FontSize="18" Foreground="#D1D5DB" />
+        <TextBlock Text="{Binding EditItem.DisplayRarityName}" FontSize="18"
+                  Foreground="{Binding EditItem.RarityBrush}" Classes="RarityText" />
+      </StackPanel>
+      <!-- <TextBlock FontSize="18">
+        <Run Text="Seed:" />
+        <Run Text="{Binding EditItem.Seed}" />
+      </TextBlock>
+      <TextBlock FontSize="18">
+        <Run Text="Wear:" />
+        <Run Text="{Binding EditItem.Wear}" />
+      </TextBlock> -->
+    </StackPanel>
+
+    <ContentControl Grid.Row="1" 
+                    HorizontalAlignment="Right" FontSize="17.5" Margin="10,5">
+      <StackPanel Orientation="Horizontal" Spacing="10">
+
+        <StackPanel Spacing="8" Orientation="Horizontal">
+          <StackPanel>
+            <ComboBox ItemsSource="{Binding AvailableItemDefs}" SelectedItem="{Binding SelectedItemDef}">
+              <ComboBox.ItemTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding Value.DisplayText}" IsEnabled="{Binding Value.IsSeparator}"/>
+                </DataTemplate>
+              </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <AutoCompleteBox ItemsSource="{Binding AvailableItemDefs}" Text="{Binding SelectedItemDefDisplayName}" AsyncPopulator="{Binding AvailableItemDefsFilter}"/>
+          </StackPanel>
+          
+          <StackPanel>
+            <ComboBox ItemsSource="{Binding AvailablePaintKitDefs}" SelectedItem="{Binding SelectedPaintKitDef}">
+              <ComboBox.ItemTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding Value.DisplayText}" IsEnabled="{Binding Value.IsSeparator}"/>
+                </DataTemplate>
+              </ComboBox.ItemTemplate>
+            </ComboBox> 
+
+            <AutoCompleteBox ItemsSource="{Binding AvailablePaintKitDefs}" Text="{Binding SelectedPaintKitDefDisplayName}" AsyncPopulator="{Binding AvailablePaintKitDefsFilter}"/>
+          </StackPanel>
+        </StackPanel>
+
+        <Button Content="Save" Command="{Binding SaveEditItemCommand}"/>
+        <Button Content="Cancel" Command="{Binding CancelEditItemCommand}"/>
+      </StackPanel>
+    </ContentControl>
+  </Grid>
+
+</UserControl>

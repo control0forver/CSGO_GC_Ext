@@ -1,0 +1,65 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:i="https://github.com/projektanker/icons.avalonia"
+            xmlns:ia="using:Xaml.Behaviors.Interactions.Animated"
+            xmlns:cs="clr-namespace:CSGO_GC_Ext.Converters;assembly=CSGO_GC_Ext"
+            xmlns:vm="clr-namespace:CSGO_GC_Ext.ViewModels"
+            xmlns:vs="clr-namespace:CSGO_GC_Ext.Views"
+            xmlns:ms="clr-namespace:CSGO_GC_Ext.Models"
+            xmlns:us="clr-namespace:CSGO_GC_Ext.Utils"
+            xmlns:sys="clr-namespace:System;assembly=mscorlib"
+            mc:Ignorable="d" d:DesignWidth="950" d:DesignHeight="1100"
+            x:Class="CSGO_GC_Ext.Views.AboutView"
+            x:DataType="vm:AboutViewModel"
+            Background="{Binding Background}">
+  <Design.DataContext>
+    <vm:AboutViewModel/>
+  </Design.DataContext>
+
+  <ScrollViewer>
+    <Interaction.Behaviors>
+      <ia:VerticalScrollViewerAnimatedBehavior/>
+    </Interaction.Behaviors>
+
+    <StackPanel Spacing="10">
+      <TextBlock>
+        <Run Classes="heading" Text="{Binding AppTitle}"/>
+        <Run Classes="caption" Text="{Binding AppDisplayVersion}"/>
+      </TextBlock>
+
+      <StackPanel Margin="8,0,0,0">
+        <TextBlock Classes="body" Margin="12,0,0,0">
+          Author: TheLGF
+          <LineBreak/>
+          Extensions for CSGO_GC is a free and open-source software (FOSS) project.
+        </TextBlock>
+
+        <Separator Margin="0,20"/>
+
+        <TextBlock Classes="subheading" Text="License"/>
+        <TextBlock Classes="body" Margin="12,0,0,0" Padding="0,0,20,0">
+          This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+        </TextBlock>
+        <TextBlock Classes="body" Margin="12,0,0,0" Padding="0,0,20,0">
+          This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+        </TextBlock>
+        <TextBlock Classes="body" Margin="12,0,0,0" Padding="0,0,20,0">
+          You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
+        </TextBlock>
+        <TextBlock Classes="body" Margin="12,0,0,0" Padding="0,0,20,0">
+          <LineBreak/>
+          <LineBreak/>
+          Copyright (c) 2025 TheLGF (LGF-Studio™)
+        </TextBlock>
+
+        <Separator Margin="0,20"/>
+
+        <TextBlock Classes="subheading" Text="Official Repository"/>
+        <HyperlinkButton Cursor="Hand" Content="https://github.com/control0forver/csgo_gc_ext"/>
+      </StackPanel>
+    </StackPanel>
+    
+  </ScrollViewer>
+</UserControl>

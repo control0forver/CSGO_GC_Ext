@@ -1,0 +1,335 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:i="https://github.com/projektanker/icons.avalonia"
+            xmlns:ia="using:Xaml.Behaviors.Interactions.Animated"
+            xmlns:cs="clr-namespace:CSGO_GC_Ext.Converters;assembly=CSGO_GC_Ext"
+            xmlns:vm="clr-namespace:CSGO_GC_Ext.ViewModels"
+            xmlns:vs="clr-namespace:CSGO_GC_Ext.Views"
+            xmlns:ms="clr-namespace:CSGO_GC_Ext.Models"
+            xmlns:us="clr-namespace:CSGO_GC_Ext.Utils"
+            xmlns:sys="clr-namespace:System;assembly=mscorlib"
+            mc:Ignorable="d" d:DesignWidth="950" d:DesignHeight="1100"
+            x:Class="CSGO_GC_Ext.Views.HomeView"
+            x:DataType="vm:HomeViewModel"
+            Background="{Binding Background}">
+  <UserControl.Resources>
+    <cs:BooleanToOpacityConverter x:Key="BooleanToOpacityConverter"/>
+  </UserControl.Resources>
+
+  <Grid RowDefinitions="Auto,*">
+    
+    <StackPanel Grid.Row="0"
+                Spacing="10">
+      <TextBlock ToolTip.Tip="LGF is the BEST of WORLD!" FontSize="24">
+        <Run>👋</Run>
+        <Run>😊</Run>
+        <Run Text="Welcome, Let's getting started here! " FontWeight="Bold"/>
+      </TextBlock>
+
+      <!-- DISABLED -->
+      <ListBox IsVisible="False" x:Name="BonjourRunner" ItemsSource="{Binding BonjoursTripled}" FontSize="40" FontWeight="SemiLight"
+               Background="#06ffffff" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+               HorizontalAlignment="Center" Width="123">
+        <ListBox.ItemsPanel>
+          <ItemsPanelTemplate>
+            <StackPanel Orientation="Horizontal" Spacing="0"/>
+          </ItemsPanelTemplate>
+        </ListBox.ItemsPanel>
+
+        <ListBox.ItemTemplate>
+          <DataTemplate>
+            <TextBlock Margin="12,12,20,12" VerticalAlignment="Center" Text="{Binding}"/>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+
+      <Button Content="👾 Test 👾" FontSize="40" Click="OnTestButtonClick"/>
+    </StackPanel>
+
+    <!-- 12 * 0.31415926535 = 3.7699111842 -->
+    <Border Grid.Row="1" Margin="2,16,2,8"
+            Background="#18FFFFFF" CornerRadius="12" Padding="3.7699111842">
+      <Grid RowDefinitions="Auto,Auto,*" ColumnDefinitions="*">
+
+        <!-- Title Bar -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10" Spacing="10" VerticalAlignment="Center">
+          <TextBlock FontSize="32" FontWeight="Bold">
+            <Run FontWeight="Regular" Text="✨"/>Inventory
+          </TextBlock>
+          <Button ToolTip.Tip="保存更改" Command="{Binding SaveChangesCommand}"
+                  Background="#4CAF50">
+            <StackPanel Orientation="Horizontal" Spacing="5">
+              <i:Icon Value="fa-solid fa-feather-pointed"/>
+              <TextBlock Text="保存" />
+            </StackPanel>
+          </Button>
+          <Button ToolTip.Tip="删除所有物品" Command="{Binding ResetInventoryCommand}"
+                  Background="#BC4545">
+            <StackPanel Orientation="Horizontal" Spacing="5">
+              <i:Icon Value="fa-solid fa-ban"/>
+              <TextBlock Text="重置" />
+            </StackPanel>
+          </Button>
+
+          <Rectangle Classes="VerticalSeparator" Margin="3,2"/>
+
+          <Button ToolTip.Tip="将来自分享的物品加入到库存中！" Command="{Binding FromSharingCommand}">
+            <StackPanel Orientation="Horizontal" Spacing="5">
+              <i:Icon Value="fa-solid fa-clone"/>
+              <TextBlock Text="来自分享的物品" />
+            </StackPanel>
+          </Button>
+          <Button ToolTip.Tip="分享当前库存" Command="{Binding ShareInventoryCommand}">
+            <StackPanel Orientation="Horizontal" Spacing="5">
+              <i:Icon Value="fa-solid fa-share-nodes"/>
+              <TextBlock Text="分享" />
+            </StackPanel>
+          </Button>
+          <Button ToolTip.Tip="添加示例库存的物品" Command="{Binding AddSampleInventoryItemsCommand}"
+                  Background="#C715A1">
+            <StackPanel Orientation="Horizontal" Spacing="5">
+              <i:Icon Value="fa-solid fa-gift"/>
+              <TextBlock Text="添加示例物品" />
+            </StackPanel>
+          </Button>
+        </StackPanel>
+
+        <!-- Inventory Control -->
+        <StackPanel Grid.Row="1" Orientation="Vertical" Margin="10" Spacing="3">
+
+          <Grid ColumnDefinitions="*,Auto">
+            <TextBlock Grid.Column="0" VerticalAlignment="Bottom" FontSize="18">
+              🗃
+              <Run Text="{Binding ItemsCount}" FontWeight="Bold"/>
+              个物品
+            </TextBlock>
+
+            <ReversibleStackPanel Grid.Column="1"
+                                  Orientation="Horizontal"
+                                  ReverseOrder="True">
+              <Button ToolTip.Tip="添加新物品" Command="{Binding AddNewItemCommand}"
+                      Background="#1E40AF">
+                <StackPanel Orientation="Horizontal" Spacing="5">
+                  <i:Icon Value="fa-solid fa-cart-plus"/>
+                  <TextBlock Text="添加物品" />
+                </StackPanel>
+              </Button>
+
+              <ReversibleStackPanel Orientation="Horizontal"
+                                    IsVisible="{Binding ShouldShowItemsOperation}" Spacing="2"
+                                    ReverseOrder="{Binding ReverseOrder, RelativeSource={RelativeSource AncestorType=ReversibleStackPanel}}">
+                <Rectangle Classes="VerticalSeparator" Margin="8, 5"/>
+
+                <Button ToolTip.Tip="从库存中移除这些项目" Command="{Binding DeleteSelectedItemsCommand}"
+                        Background="#D71103">
+                  <StackPanel Orientation="Horizontal" Spacing="5">
+                    <i:Icon Value="fa-solid fa-trash"/>
+                    <TextBlock Text="移除所选项" />
+                  </StackPanel>
+                </Button>
+                <Button ToolTip.Tip="在库存中生成一份相同的物品" Command="{Binding CloneSelectedItemsCommand}">
+                  <StackPanel Orientation="Horizontal" Spacing="5">
+                    <i:Icon Value="fa-solid fa-copy"/>
+                    <TextBlock Text="克隆所选项" />
+                  </StackPanel>
+                </Button>
+
+              </ReversibleStackPanel>
+            </ReversibleStackPanel>
+          </Grid>
+
+          <StackPanel Spacing="0">
+            <Grid ColumnDefinitions="*,Auto" Margin="0,2,0,0">
+              <StackPanel Grid.Column="0"
+                          Orientation="Horizontal" Spacing="6">
+
+                <ComboBox ToolTip.Tip="当前分页索引"
+                          FontSize="18" BorderThickness="1,1,1,0" CornerRadius="5,5,0,0"
+                          MaxWidth="80" VerticalAlignment="Bottom" IsTextSearchEnabled="True"
+                          ItemsSource="{Binding DisplayPageNumbers}" SelectedIndex="{Binding CurrentPageIndex}"/>
+
+                <TextBox Text="{Binding SearchText}" Watermark="🔍搜索名称或皮肤..." ToolTip.Tip="筛选物品"
+                         Width="200" BorderThickness="1,1,1,0" CornerRadius="5,5,0,0"
+                         VerticalAlignment="Bottom"/>
+
+                <TextBlock Text="{Binding StatusMessage}"
+                           Foreground="#C0C0C0" VerticalAlignment="Bottom"
+                           Opacity="{Binding IsMessageVisible, Converter={StaticResource BooleanToOpacityConverter}}">
+                  <TextBlock.Transitions>
+                    <Transitions>
+                      <DoubleTransition Property="Opacity" Duration="0:0:0.3"/>
+                    </Transitions>
+                  </TextBlock.Transitions>
+                </TextBlock>
+
+              </StackPanel>
+
+              <ReversibleStackPanel Grid.Column="1"
+                                    Orientation="Horizontal" ReverseOrder="True">
+
+                <ReversibleStackPanel Orientation="Horizontal"
+                                      Spacing="0" Margin="0,0,0,2"
+                                      ReverseOrder="{Binding ReverseOrder, RelativeSource={RelativeSource AncestorType=ReversibleStackPanel}}">
+                  <StackPanel.Styles>
+                    <Style Selector="ComboBox">
+                      <Setter Property="Margin">0</Setter>
+                      <Setter Property="CornerRadius">0</Setter>
+                      <Setter Property="BorderThickness">0</Setter>
+                    </Style>
+                  </StackPanel.Styles>
+
+                  <ComboBox x:Name="CategoryCombobox" ToolTip.Tip="not_implemented"
+                            Width="230" Height="50" FontWeight="Regular" FontSize="18"
+                            VerticalAlignment="Bottom"
+                            ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}">
+                    <ComboBox.ItemTemplate>
+                      <DataTemplate>
+                        <TextBlock Text="{Binding DisplayName}" />
+                      </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                  </ComboBox>
+                  <Rectangle Classes="VerticalSeparator"/>
+                  <ComboBox x:Name="SubCategoryCombobox" ToolTip.Tip="not_implemented"
+                            Width="180" Height="50" FontWeight="Bold" FontSize="16"
+                            VerticalAlignment="Bottom"
+                            IsEnabled="{Binding ShouldShowSubMenu}"
+                            ItemsSource="{Binding SubMenuCategories}" SelectedItem="{Binding SelectedSubMenuCategory}">
+                    <ComboBox.ItemTemplate>
+                      <DataTemplate>
+                        <TextBlock Text="{Binding DisplayName}" />
+                      </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                  </ComboBox>
+                </ReversibleStackPanel>
+
+              </ReversibleStackPanel>
+
+            </Grid>
+            <Separator Margin="0"/>
+          </StackPanel>
+        </StackPanel>
+
+        <!-- Item Editor -->
+        <ContentControl x:Name="ItemEditorPresenter" Grid.Row="2"/>
+
+        <!-- Inventory List -->
+        <ListBox x:Name="InventoryList" Grid.Row="2" Initialized="ListBox_Initialized"
+                 Margin="12" CornerRadius="12" Padding="3.7699111842"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto" SelectionMode="Multiple"
+                 ItemsSource="{Binding PagedItems}" SelectedItems="{Binding SelectedItems}">
+          <ListBox.Styles>
+            <Style Selector="Border#ItemCard">
+              <Setter Property="Background" Value="#1F2937" />
+              <Setter Property="BorderBrush" Value="#374151" />
+              <Setter Property="BorderThickness" Value="1" />
+              <Setter Property="CornerRadius" Value="4" />
+              <Setter Property="Padding" Value="8,6,8,4" />
+              <Setter Property="Margin" Value="2" />
+              <Setter Property="Width" Value="200" />
+              <Setter Property="Effect">
+                <DropShadowEffect BlurRadius="16" OffsetX="0" OffsetY="0" Color="Black" Opacity="0.3" />
+              </Setter>
+              <Setter Property="RenderTransform" Value="scale(1)"/>
+              <Setter Property="Transitions">
+                <Transitions>
+                  <BrushTransition Property="Background" Duration="0:0:0.28"/>
+                  <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.3" Easing="CubicEaseOut"/>
+                </Transitions>
+              </Setter>
+            </Style>
+
+            <Style Selector="Border#ItemCard:pointerover">
+              <Setter Property="Background" Value="#374151" />
+              <Setter Property="RenderTransform" Value="scale(1.02)"/>
+            </Style>
+
+            <Style Selector="TextBlock.RarityText">
+              <Setter Property="FontWeight" Value="Bold" />
+              <Setter Property="Margin" Value="0 2 0 5" />
+            </Style>
+
+            <Style Selector="Button.ActionButton">
+              <Setter Property="Width" Value="24" />
+              <Setter Property="Height" Value="24" />
+              <Setter Property="Padding" Value="0" />
+              <Setter Property="Margin" Value="2" />
+            </Style>
+          </ListBox.Styles>
+
+          <ListBox.ItemsPanel>
+            <ItemsPanelTemplate>
+              <WrapPanel/>
+            </ItemsPanelTemplate>
+          </ListBox.ItemsPanel>
+
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <Border x:Name="ItemCard" DoubleTapped="ItemCard_DoubleTapped">
+                <StackPanel>
+                  <!--<Design.DataContext>
+                  <ms:InventoryItem/>
+                </Design.DataContext>-->
+
+                  <StackPanel Orientation="Vertical">
+                    <!-- 物品图片 -->
+                    <Image Source="{Binding VisualImage}" Height="120" Stretch="UniformToFill" />
+                    <!-- 稀有度指示器 -->
+                    <Border Height="5" Background="{Binding RarityBrush}" />
+                  </StackPanel>
+
+                  <!-- 物品信息 -->
+                  <TextBlock Text="{Binding DisplaySkinName}" FontWeight="Bold" Margin="0 5 0 0" />
+                  <TextBlock Text="{Binding DisplayName}" FontSize="12" Foreground="#9CA3AF" />
+
+                  <!-- 类别和稀有度 -->
+                  <StackPanel Orientation="Horizontal" Spacing="5" Margin="0 2 0 0">
+                    <TextBlock Text="{Binding CategoryDisplayName}" FontSize="11" Foreground="#D1D5DB" />
+                    <TextBlock Text="{Binding DisplayRarityName}" FontSize="11"
+                               Foreground="{Binding RarityBrush}" Classes="RarityText" />
+                  </StackPanel>
+
+                  <!-- 数量控制和操作按钮 -->
+                  <ReversibleStackPanel Margin="0 5 0 0" Spacing="5"
+                                        ReverseOrder="True" Orientation="Horizontal"
+                                        HorizontalAlignment="Stretch">
+                    <!-- 数量控制 -->
+                    <!--<Border Background="#374151" CornerRadius="3">
+                      <StackPanel Orientation="Horizontal">
+                        <Button Command="{Binding $parent[ListBox].DataContext.DecreaseQuantityCommand}"
+                                CommandParameter="{Binding}"
+                                Classes="ActionButton" i:Attached.Icon="fa-solid fa-minus" ToolTip.Tip="Decrase" />
+                        <TextBlock Text="{Binding Quantity}" Width="20" TextAlignment="Center" VerticalAlignment="Center"/>
+                        <Button Command="{Binding $parent[ListBox].DataContext.IncreaseQuantityCommand}"
+                                CommandParameter="{Binding}"
+                                Classes="ActionButton" i:Attached.Icon="fa-solid fa-plus" ToolTip.Tip="Incrase" />
+                      </StackPanel>
+                    </Border>-->
+
+                    <!-- 操作按钮 -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 0 0 0">
+                      <Button Name="__PART_EDIT_BUTTON" Command="{Binding $parent[ListBox].DataContext.EditItemCommand}"
+                              CommandParameter="{Binding}"
+                              Classes="ActionButton" ToolTip.Tip="编辑">
+                        <i:Icon Value="fa-cube"/>
+                      </Button>
+                      <Button Name="__PART_DELETE_BUTTON" Command="{Binding $parent[ListBox].DataContext.DeleteItemCommand}"
+                              CommandParameter="{Binding}"
+                              Classes="ActionButton" ToolTip.Tip="删除" Foreground="#EF4444">
+                        <i:Icon Value="fa-trash-can" Foreground="#c0392b"/>
+                      </Button>
+                    </StackPanel>
+                  </ReversibleStackPanel>
+                </StackPanel>
+              </Border>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+
+          <!--<ms:InventoryItem/>-->
+        </ListBox>
+      </Grid>
+    </Border>
+    
+  </Grid>
+</UserControl>

@@ -1,0 +1,117 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:i="https://github.com/projektanker/icons.avalonia"
+             xmlns:ia="using:Xaml.Behaviors.Interactions.Animated"
+             xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
+             xmlns:cs="clr-namespace:CSGO_GC_Ext.Converters;assembly=CSGO_GC_Ext"
+             xmlns:vm="clr-namespace:CSGO_GC_Ext.ViewModels"
+             xmlns:vs="clr-namespace:CSGO_GC_Ext.Views"
+             xmlns:ms="clr-namespace:CSGO_GC_Ext.Models"
+             xmlns:us="clr-namespace:CSGO_GC_Ext.Utils"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d" d:DesignWidth="950" d:DesignHeight="1200"
+             x:Class="CSGO_GC_Ext.Views.MainView"
+             x:DataType="vm:MainViewModel"
+             FontSize="16" Foreground="AntiqueWhite" Background="{Binding AppBackgroundBrush}">
+  <Design.DataContext>
+    <vm:MainViewModel />
+  </Design.DataContext>
+
+  <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+    <ContentControl x:Name="AppContainer"
+                    Grid.Row="1" Content="{Binding CurrentView}"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                    Padding="18,16,18,16"/>
+    <TextBlock Grid.Row="1" Opacity="0.23" FontSize="36" TextWrapping="Wrap" IsHitTestVisible="False"
+               HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+      <Run Text="⚠ This is a demo app. （独立开发中，在短时间内开发完成基本功能，可能会存在大量不可用功能以及错误。） ⚠" />
+      <LineBreak />
+      <LineBreak />
+      <Run Text="🚧 Alpha 预览版 | 早期构建 🚧" />
+      <LineBreak />
+      <Run Text="核心功能正在快速迭代中，部分功能尚未实现。我们期待您的测试与反馈！" />
+      <LineBreak />
+      <LineBreak />
+      <Run Text="🚧 Alpha Preview | Early Build 🚧" />
+      <LineBreak />
+      <Run Text="Core features are in active development; some functionalities are not yet available. We value your testing and feedback!" />
+    </TextBlock>
+
+    <Border x:Name="AppBar" IsVisible="{Binding AppBarStyle.Show}"
+            Grid.Row="0" Background="#303030"
+            HorizontalAlignment="Stretch">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <!-- L-Side Control -->
+          <ColumnDefinition Width="Auto"/>
+
+          <!-- Title -->
+          <ColumnDefinition Width="*"/>
+
+          <!-- R-Side Title -->
+          <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <SplitButton Grid.Column="2" IsVisible="{Binding AppBarStyle.ShowMenuButton}"
+                     Command="{Binding NavigateHomeCommand}"
+                     Margin="7,3,7,3">
+          <SplitButton.Content>
+            <TextBlock>
+              <!--<i:Icon Value="fa-solid fa-angle-left"/>
+              <Run Text="Back"/>-->
+              <i:Icon Value="fa-solid fa-house"/>
+              <Run Text="Home"/>
+            </TextBlock>
+          </SplitButton.Content>
+
+          <SplitButton.Flyout>
+            <MenuFlyout Placement="Bottom">
+              <MenuItem Header="File" i:MenuItem.Icon="fa-solid fa-file">
+                <MenuItem Header="Open" InputGesture="Ctrl+O" HotKey="Ctrl+O"/>
+                <Separator/>
+                <MenuItem Header="Save" InputGesture="Ctrl+S" HotKey="Ctrl+S"/>
+              </MenuItem>
+              <MenuItem Header="Preferences" InputGesture="Ctrl+I" HotKey="Ctrl+I" Command="{Binding NavigateSettingsCommand}"
+                        i:MenuItem.Icon="fa-solid fa-wrench" />
+              <Separator/>
+              <MenuItem Header="About" i:MenuItem.Icon="fa-solid fa-info" InputGesture="F2" HotKey="F2" Command="{Binding NavigateAboutCommand}"/>
+              <Separator/>
+              <MenuItem x:Name="MenuButtonExit" Header="Exit" Click="OnExitClick" i:MenuItem.Icon="fa-solid fa-door-closed" InputGesture="Alt+F4" HotKey="Alt+F4"/>
+            </MenuFlyout>
+          </SplitButton.Flyout>
+        </SplitButton>
+
+        <!--<TextBlock Grid.Column="1"-->
+        <TextBlock Grid.ColumnSpan="3" IsVisible="{Binding AppBarStyle.ShowTitle}"
+                   Margin="10" HorizontalAlignment="Center" VerticalAlignment="Center">
+          <ContentControl Content="{Binding AppBarStyle.TitleContent}"
+               FontSize="20" FontWeight="DemiBold"/>
+          <ContentControl Content="{Binding AppBarStyle.TitleTagContent}" Foreground="Gray"
+               FontSize="14.5" FontWeight="Regular"/>
+        </TextBlock>
+
+        <ReversibleStackPanel Grid.Column="0" IsVisible="{Binding AppBarStyle.ShowWindowButtons}"
+                              Margin="2,3,2,3"
+                              Orientation="Horizontal" ReverseOrder="True">
+          <ReversibleStackPanel.Styles>
+            <Style Selector="Button">
+              <Setter Property="FontSize">20</Setter>
+              <Setter Property="Width">40</Setter>
+              <Setter Property="Height">40</Setter>
+            </Style>
+          </ReversibleStackPanel.Styles>
+          <Button x:Name="ButtonExit" Click="OnExitClick" i:Attached.Icon="fa-solid fa-xmark" ToolTip.Tip="Close"/>
+          <Button x:Name="ButtonToggleWindowState" Click="OnToggleWindowStateClick" i:Attached.Icon="fa-solid fa-window-maximize" ToolTip.Tip="Toggle window state"/>
+          <Button x:Name="ButtonMinimizeWindow" Click="OnMinimizeWindowClick" i:Attached.Icon="fa-solid fa-window-minimize" ToolTip.Tip="Minimize"/>
+        </ReversibleStackPanel>
+
+      </Grid>
+    </Border>
+  </Grid>
+</UserControl>

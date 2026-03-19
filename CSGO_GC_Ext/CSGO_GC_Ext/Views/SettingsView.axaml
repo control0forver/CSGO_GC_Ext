@@ -1,0 +1,28 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:i="https://github.com/projektanker/icons.avalonia"
+            xmlns:ia="using:Xaml.Behaviors.Interactions.Animated"
+            xmlns:cs="clr-namespace:CSGO_GC_Ext.Converters;assembly=CSGO_GC_Ext"
+            xmlns:vm="clr-namespace:CSGO_GC_Ext.ViewModels"
+            xmlns:vs="clr-namespace:CSGO_GC_Ext.Views"
+            xmlns:ms="clr-namespace:CSGO_GC_Ext.Models"
+            xmlns:us="clr-namespace:CSGO_GC_Ext.Utils"
+            xmlns:sys="clr-namespace:System;assembly=mscorlib"
+            mc:Ignorable="d" d:DesignWidth="950" d:DesignHeight="1100"
+            x:Class="CSGO_GC_Ext.Views.SettingsView"
+            x:DataType="vm:SettingsViewModel"
+            Orientation="Vertical" Spacing="10" Background="{Binding Background}">
+  <StackPanel.Resources>
+    <cs:BooleanToOpacityConverter x:Key="BooleanToOpacityConverter"/>
+  </StackPanel.Resources>
+  <!-- <Grid Margin="12,6" ColumnDefinitions="*,Auto">
+    <TextBlock Grid.Column="0">
+      <Run Text="CSGO Directory:"/>
+      <Run Text="{Binding CSGODirectory}"/>
+    </TextBlock>
+    <Button Content="Browse.."/>
+  </Grid> -->
+
+</StackPanel>
