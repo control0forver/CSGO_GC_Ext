@@ -1,6 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
-using CSGO_GC_Ext.Utils.Views;
+using LibLGFs.AvaVisualHelper;
 using CSGO_GC_Ext.ViewModels;
 using log4net;
 

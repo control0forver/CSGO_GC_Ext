@@ -8,6 +8,7 @@ using CSGO_GC_Ext.ViewModels;
 using log4net;
 using Swordfish.NET.Collections;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -19,6 +20,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using static CSGO_GC_Ext.Utils.Game.CSGOTxtHelper.CSGOJsonLikeTxtHelper;
 using ValueType = CSGO_GC_Ext.Utils.Game.CSGOTxtHelper.CSGOJsonLikeTxtHelper.ValueType;
@@ -242,7 +244,7 @@ public partial class InventoryItem : ObservableObject, IInventoryItemSearcherSea
 
     // [ObservableProperty]
     // public partial int Quantity { get; set; } = 1;
-    
+
     [ObservableProperty]
     public partial int? Id { get; set; } = null;
 
@@ -774,8 +776,7 @@ public partial class InventoryItem : ObservableObject, IInventoryItemSearcherSea
     }
 
     private static readonly Bitmap VisualImage_default_image_unknown = new(AssetLoader.Open(new($"avares://{nameof(CSGO_GC_Ext)}/Assets/Images/Any.png")));
-    private static readonly Dictionary<string, Bitmap?> VisualImage_cache = [];
-    private readonly object _visual_image_loader_lock = new(); // TODO: Use System.Threading.Lock
+    private static readonly ConcurrentDictionary<string, (Lock lck, Bitmap? image)> VisualImage_cache = [];
     public Bitmap? VisualImage
     {
         get
@@ -785,6 +786,11 @@ public partial class InventoryItem : ObservableObject, IInventoryItemSearcherSea
 
             if (string.IsNullOrEmpty(DisplayImageToken))
                 return VisualImage_default_image_unknown; // B: Image token is empty
+
+            if (Avalonia.Controls.Design.IsDesignMode)
+            {
+                return null;
+            }
 
             var resource = CSGOGameResourcesProvider();
             if (resource.GameItemsCDN is null)
@@ -833,50 +839,68 @@ public partial class InventoryItem : ObservableObject, IInventoryItemSearcherSea
             if (__parent_dir is not null && !Directory.Exists(__parent_dir))
                 Directory.CreateDirectory(__parent_dir);
 
-            // GetImageFile
-            if (!File.Exists(imageFilePath))
-            {
-                if (Avalonia.Controls.Design.IsDesignMode)
-                {
-                    return null;
-                }
-                Debug.WriteLine($"\"{imageFilePath}\" not exists, downloading from \"{imageRemote}\"");
-                Task.Run(async void () =>
-                {
-                    using var httpClient = new HttpClient();
-
-                    using var response = await httpClient.GetAsync(imageRemote, HttpCompletionOption.ResponseHeadersRead);
-                    response.EnsureSuccessStatusCode();
-
-                    using var contentStream = await response.Content.ReadAsStreamAsync();
-                    using var fileStream = new FileStream(imageFilePath, FileMode.Create);
-                    await contentStream.CopyToAsync(fileStream);
-
-                    NotifyVisualImageUpdate();
-                });
-
-                return VisualImage_default_image_unknown; // B(Callback): Image dose not exist of local storage
-            }
-
             // Load
-            if (!VisualImage_cache.TryGetValue(imageFilePath, out var cache))
+            var get = VisualImage_cache.GetOrAdd(
+                imageFilePath,
+                valueFactory: _ => (new(), null) // mark for loading
+            );
+            if (get.image is null)
             {
-                VisualImage_cache.Add(imageFilePath, null); // mark for loading
-
                 Task.Run(() =>
                 {
-                    lock (_visual_image_loader_lock)
-                    {
-                        using var fs = File.OpenRead(imageFilePath);
-                        var image = new Bitmap(File.OpenRead(imageFilePath));
-                        VisualImage_cache[imageFilePath] = image;
+                    if (get.lck.TryEnter())
+                    { // Begin Loading
+
+                        // Get Image File
+                        if (!File.Exists(imageFilePath))
+                        { // Image dose not exist of local storage
+                            try
+                            {
+                                Debug.WriteLine($"\"{imageFilePath}\" not exists, downloading from \"{imageRemote}\"");
+                                using var httpClient = new HttpClient();
+
+                                using var response = httpClient.GetAsync(imageRemote, HttpCompletionOption.ResponseHeadersRead).Result;
+                                response.EnsureSuccessStatusCode();
+
+                                using var contentStream = response.Content.ReadAsStreamAsync().Result;
+                                using var fileStream = new FileStream(imageFilePath, FileMode.Create);
+                                contentStream.CopyToAsync(fileStream).Wait();
+                            }
+                            catch
+                            {
+                                goto end; // Clean-Return: Do not try any more, just leave it with 'VisualImage_default_image_unknown'
+                            }
+                        }
+
+                        // Load Image
+                        Bitmap? image = null;
+                        try
+                        {
+                            using var fs = File.OpenRead(imageFilePath);
+                            image = new Bitmap(File.OpenRead(imageFilePath));
+                        }
+                        catch { } // Do not try any more, just leave it with 'VisualImage_default_image_unknown'
+
+                        if (image is not null)
+                        {
+                            _ = VisualImage_cache.TryUpdate(imageFilePath, (get.lck, image), get);
+                            NotifyVisualImageUpdate();
+                        }
+
+                    end:
+                        get.lck.Exit();
+                    }
+                    else
+                    { // Wait for loading
+                        get.lck.Enter();
+                        get.lck.Exit();
                         NotifyVisualImageUpdate();
                     }
                 });
                 return VisualImage_default_image_unknown; // B(Callback): Image dose not existing in memory cache pool.
             }
 
-            return cache;
+            return get.image;
         }
     }
 

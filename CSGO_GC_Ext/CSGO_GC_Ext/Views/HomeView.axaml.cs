@@ -9,7 +9,7 @@ using Avalonia.Reactive;
 using Avalonia.Styling;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
-using CSGO_GC_Ext.Utils.Views;
+using LibLGFs.AvaVisualHelper;
 using CSGO_GC_Ext.ViewModels;
 using log4net;
 using System;

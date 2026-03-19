@@ -24,6 +24,7 @@
     <PackageReference Include="CommunityToolkit.Mvvm" />
     <PackageReference Include="Egolds.Xaml.Behaviors.Interactions.Animated" />
     <PackageReference Include="FuzzySharp" />
+    <PackageReference Include="LibLGFs.AvaVisualHelper.Release" />
     <PackageReference Include="log4net" />
     <PackageReference Include="Projektanker.Icons.Avalonia" />
     <PackageReference Include="Projektanker.Icons.Avalonia.FontAwesome" />

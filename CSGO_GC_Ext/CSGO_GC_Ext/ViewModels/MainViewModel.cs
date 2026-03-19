@@ -5,7 +5,7 @@ using Avalonia.Media;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CSGO_GC_Ext.Utils.Views;
+using LibLGFs.AvaVisualHelper;
 using CSGO_GC_Ext.Views;
 using System;
 using System.ComponentModel;
